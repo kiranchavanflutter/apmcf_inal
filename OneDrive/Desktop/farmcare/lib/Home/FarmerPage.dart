@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class FarmerPage extends StatelessWidget {
@@ -50,8 +52,7 @@ class FarmerPage extends StatelessWidget {
         Navigator.pushNamed(context, route);
       },
       style: ElevatedButton.styleFrom(
-        primary: color, // Background color
-        onPrimary: Colors.white, // Text color
+        foregroundColor: Colors.white, backgroundColor: color, // Text color
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),

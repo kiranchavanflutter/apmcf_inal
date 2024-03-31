@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LotHistoryPage extends StatefulWidget {
+  const LotHistoryPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _LotHistoryPageState createState() => _LotHistoryPageState();
 }
 
@@ -13,32 +16,32 @@ class _LotHistoryPageState extends State<LotHistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lot History'),
+        title: const Text('Lot History'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Search by Date:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Row(
               children: [
                 ElevatedButton(
                   onPressed: () => _selectDate(context, true),
-                  child: Text('From Date'),
+                  child: const Text('From Date'),
                 ),
-                SizedBox(width: 8.0),
+                const SizedBox(width: 8.0),
                 ElevatedButton(
                   onPressed: () => _selectDate(context, false),
-                  child: Text('To Date'),
+                  child: const Text('To Date'),
                 ),
               ],
             ),
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'Lot History:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
@@ -60,15 +63,15 @@ class _LotHistoryPageState extends State<LotHistoryPage> {
         children: [
           Text(
             'Trader: $traderName',
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
           Text(
             'Lot: $lotNumber',
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
           Text(
             'Price: $price',
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
         ],
       ),

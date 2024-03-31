@@ -1,27 +1,31 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 class LotStatusPage extends StatelessWidget {
+  const LotStatusPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lot Status'),
+        title: const Text('Lot Status'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Search Lot Code:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            TextField(
+            const TextField(
               decoration: InputDecoration(
                 hintText: 'Enter lot code',
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             buildStatusRow('Lot Code', true),
             buildStatusRow('Weight Check', true),
             buildStatusRow('Sample Collect', false),
@@ -30,13 +34,13 @@ class LotStatusPage extends StatelessWidget {
             buildStatusRow('Bid Status', 'Closed'),
             buildStatusRow(
                 'Bid Amount', '\$5000'), // Change this to the actual bid amount
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 // Add your logic for proceeding to bill
                 _proceedToBill(context);
               },
-              child: Text('Proceed to Bill'),
+              child: const Text('Proceed to Bill'),
             ),
           ],
         ),
@@ -52,7 +56,7 @@ class LotStatusPage extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           if (value is bool)
             Checkbox(
@@ -64,7 +68,7 @@ class LotStatusPage extends StatelessWidget {
           if (value is String)
             Text(
               value,
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
         ],
       ),
@@ -79,8 +83,8 @@ class LotStatusPage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Sample Bill'),
-          content: Column(
+          title: const Text('Sample Bill'),
+          content: const Column(
             children: [
               // Display your sample bill content here
               // Include trader name, farmer name, date, bill no, products, quantity, rate, etc.
@@ -92,7 +96,7 @@ class LotStatusPage extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );

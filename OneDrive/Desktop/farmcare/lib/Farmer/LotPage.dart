@@ -8,8 +8,8 @@ class LotPage extends StatefulWidget {
 }
 
 class _LotPageState extends State<LotPage> {
-  String selectedProduct = '[dropdown]';
-  String selectedBagType = '[dropdown]';
+  String? selectedProduct; // Change to nullable
+  String? selectedBagType; // Change to nullable
   DateTime selectedDate = DateTime.now();
   TextEditingController lotCodeController = TextEditingController();
 
@@ -103,12 +103,12 @@ class _LotPageState extends State<LotPage> {
     );
   }
 
-  Widget buildDropdown(List<String> items, String selectedItem) {
+  Widget buildDropdown(List<String> items, String? selectedItem) {
     return DropdownButton<String>(
       value: selectedItem,
       onChanged: (String? newValue) {
         setState(() {
-          selectedItem = newValue!;
+          selectedProduct = newValue;
         });
       },
       items: items.map<DropdownMenuItem<String>>((String value) {

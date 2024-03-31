@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
 class LatestNewsPage extends StatelessWidget {
@@ -33,33 +35,61 @@ class LatestNewsPage extends StatelessWidget {
       body: ListView.builder(
         itemCount: newsList.length,
         itemBuilder: (context, index) {
-          return _buildNewsCard(newsList[index]);
+          return _buildNewsCard(context, newsList[index]);
         },
       ),
     );
   }
 
-  Widget _buildNewsCard(Map<String, String> news) {
+  Widget _buildNewsCard(BuildContext context, Map<String, String> news) {
     return Card(
       margin: const EdgeInsets.all(8.0),
       elevation: 4.0,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              news['title']!,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8.0),
-            Text(
-              news['description']!,
-              style: const TextStyle(fontSize: 16),
-            ),
-          ],
+      child: InkWell(
+        onTap: () {
+          _showNewsDetails(context, news);
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      news['title']!,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
+                  const Icon(Icons.arrow_forward),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              Text(
+                news['description']!,
+                style: const TextStyle(fontSize: 16),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _showNewsDetails(BuildContext context, Map<String, String> news) {
+    // Add logic to navigate to news details page or show full news
+    // This function will be triggered when a news card is tapped
+    // For demonstration purposes, let's print the news details
+    print('Title: ${news['title']}');
+    print('Description: ${news['description']}');
   }
 }

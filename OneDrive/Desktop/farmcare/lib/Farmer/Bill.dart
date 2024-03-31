@@ -20,11 +20,11 @@ class _BillsPageState extends State<BillsPage> {
     Bill(
         productName: 'Product 1',
         price: 100.0,
-        date: DateTime.now().subtract(Duration(days: 2))),
+        date: DateTime.now().subtract(const Duration(days: 2))),
     Bill(
         productName: 'Product 2',
         price: 150.0,
-        date: DateTime.now().subtract(Duration(days: 1))),
+        date: DateTime.now().subtract(const Duration(days: 1))),
     // Add more bills as needed
   ];
 
@@ -32,23 +32,23 @@ class _BillsPageState extends State<BillsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bills'),
+        title: const Text('Bills'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Search by Date:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ElevatedButton(
               onPressed: () => _selectDate(context),
-              child: Text('Select Date'),
+              child: const Text('Select Date'),
             ),
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'Bills:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
@@ -69,7 +69,7 @@ class _BillsPageState extends State<BillsPage> {
             subtitle: Text('Price: \$${bills[index].price.toString()}'),
             trailing: ElevatedButton(
               onPressed: () => _viewBillDetails(context, bills[index]),
-              child: Text('View'),
+              child: const Text('View'),
             ),
           );
         },

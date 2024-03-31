@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
 
 class WeatherPage extends StatefulWidget {
-  const WeatherPage({super.key});
+  const WeatherPage({Key? key}) : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -10,58 +12,53 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  final String apiKey =
-      'YOUR_OPENWEATHERMAP_API_KEY'; // Replace with your API key
-  String location = '';
-  double latitude = 0.0;
-  double longitude = 0.0;
-  Map<String, dynamic>? weatherData;
-  bool isLoading = true;
+  String _location = 'Pune';
+  double _temperature = 0.0;
+  String _description = '';
+  int _humidity = 0;
+  double _windSpeed = 0.0;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _getLocation();
+    _fetchWeatherData();
   }
 
-  Future<void> _getLocation() async {
-    /*try {
-     /*Positioned position = await Geolocator.switch (expression) {
-       pattern => valu
-     } getCurrentPosition(
-      desiredAccuracy:LocationAccuracy.high);
-      setState(() {
-        latitude = position.latitude;
-        longitude = position.longitude;
-        location ='(${latitude.toStringAsFixed(2)}, ${longitude.toStringAsFixed(2)})';
-      */});
-      _getWeatherData();
-    } catch (e) {
-      //print('Error getting location: $e');
-      setState(() {
-        isLoading = false;
-      });
-    }*/
-  }
-
-  Future<void> _getWeatherData() async {
+  Future<void> _fetchWeatherData() async {
     try {
-      final response = await http.get(
-          'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric'
-              as Uri);
+      Position position = await _getLocation();
+      final response = await http.get(Uri.parse(
+          'https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=YOUR_API_KEY&units=metric'));
+
       if (response.statusCode == 200) {
+        final data = json.decode(response.body);
         setState(() {
-          weatherData = Map<String, dynamic>.from(response.body as Map);
+          _location = data['name'];
+          _temperature = data['main']['temp'];
+          _description = data['weather'][0]['description'];
+          _humidity = data['main']['humidity'];
+          _windSpeed = data['wind']['speed'];
+          _isLoading = false;
         });
       } else {
         throw Exception('Failed to load weather data');
       }
     } catch (e) {
-      //print('Error getting weather data: $e');
-    } finally {
+      print('Error getting weather data: $e');
       setState(() {
-        isLoading = false;
+        _isLoading = false;
       });
+    }
+  }
+
+  Future<Position> _getLocation() async {
+    try {
+      return await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+    } catch (e) {
+      print('Error getting location: $e');
+      throw Exception('Failed to get location');
     }
   }
 
@@ -71,56 +68,40 @@ class _WeatherPageState extends State<WeatherPage> {
       appBar: AppBar(
         title: const Text('Weather'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : weatherData != null
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Location: $location',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Temperature: ${weatherData!['main']['temp']}°C',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      Text(
-                        'Description: ${weatherData!['weather'][0]['description']}',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      Text(
-                        'Humidity: ${weatherData!['main']['humidity']}%',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      Text(
-                        'Wind Speed: ${weatherData!['wind']['speed']} m/s',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildWeatherIcon(weatherData!['weather'][0]['icon']),
-                    ],
-                  )
-                : const Center(
-                    child: Text('Failed to fetch weather data.'),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Location: $_location',
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-      ),
-    );
-  }
-
-  Widget _buildWeatherIcon(String iconCode) {
-    return Image.network(
-      'https://openweathermap.org/img/wn/$iconCode.png',
-      width: 100,
-      height: 100,
+                  const SizedBox(height: 10),
+                  Text(
+                    'Temperature: $_temperature°C',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'Description: $_description',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'Humidity: $_humidity%',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'Wind Speed: $_windSpeed m/s',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }
-
-mixin latitude {}
-
-class Geolocator {}
