@@ -77,6 +77,7 @@ class _LoginState extends State {
                   controller: passWord,
                   decoration: InputDecoration(
                     hintText: 'Password',
+                    hintStyle: const TextStyle(color: Colors.black),
                     border: const OutlineInputBorder(
                       borderSide:
                           BorderSide(color: Color.fromARGB(255, 33, 243, 86)),
